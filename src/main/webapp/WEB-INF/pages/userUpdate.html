@@ -5,7 +5,8 @@
     <title>User Update Information</title>
 </head>
 <body>
-<form th:method="PATCH" th:action="@{/{id} (id=${user.getId()})}" th:object="${user}">
+<form th:method="POST" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}">
+
     <label for="name">Name</label>
     <input type="text" th:field="*{firstName}" id="name"/>
     <br><br>

@@ -1,7 +1,7 @@
 package web.controller;
 
 import org.springframework.web.bind.annotation.*;
-import web.Dao.UserDao;
+import web.Service.UserService;
 import web.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,19 +9,17 @@ import org.springframework.ui.Model;
 import java.util.List;
 
 @Controller
-
 public class UserController {
 
-    private final UserDao userDao;
+    private final UserService userService;
 
-    public UserController(UserDao userDao) {
-        this.userDao = userDao;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
-
 
     @GetMapping("/")
     public String showAllUser(Model model) {
-        List<User> allUs = userDao.getAllUsers();
+        List<User> allUs = userService.getAllUsers();
         model.addAttribute("allUs",allUs);
         return "allUsers";
     }
@@ -32,27 +30,28 @@ public class UserController {
         model.addAttribute("user",user);
         return "addNewUser";
     }
-    @PostMapping()
+    @PostMapping("/saveUser")
     public String saveUser (@ModelAttribute("user") User user) {
-        userDao.saveUser(user);
+        userService.saveUser(user);
         return "redirect:/";
     }
 
     @GetMapping("/userUpdate/{id}")
     public String edit(Model model, @PathVariable("id") Long id) {
-        model.addAttribute("user", userDao.getUserId(id));
+        User user = userService.getUserId(id);
+        model.addAttribute("user", user);
         return "userUpdate";
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}")
     public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
-        userDao.updateInfo(id,user);
+        userService.updateUser(id,user);
         return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
-        userDao.deleteUser(id);
+        userService.deleteUser(id);
         return "redirect:/";
     }
 }
