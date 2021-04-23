@@ -20,8 +20,8 @@ public class Role implements GrantedAuthority {
     @Column
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany( mappedBy = "roles")
+    private Set<User> users;
 
     public Role() {}
 
